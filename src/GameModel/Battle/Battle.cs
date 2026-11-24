@@ -54,6 +54,8 @@ public sealed partial class Battle
     public IEnumerable<Unit> AliveChampions => _champions.Where(c => c.Alive);
     public IEnumerable<Unit> AliveEnemies => _enemies.Where(e => e.Alive);
 
+    public BattleStats Stats { get; } = new();
+
     /// <summary>A plain-text record of what happened, for the console demo and debugging.</summary>
     public IReadOnlyList<string> Log => _log;
 
@@ -120,6 +122,15 @@ public sealed partial class Battle
         target.LastHitTime = time;
         target.LastHitById = actor.Id;
         bool killed = !target.Alive;
+
+        if (actor.Side == Side.Champion)
+        {
+            Stats.DamageDealt += damage;
+            Stats.BestHit = Math.Max(Stats.BestHit, damage);
+            if (spark) Stats.Sparks++;
+            if (killed) Stats.Kills++;
+        }
+        else Stats.DamageTaken += damage;
 
         int crystals = 0;
         if (actor.Side == Side.Champion)

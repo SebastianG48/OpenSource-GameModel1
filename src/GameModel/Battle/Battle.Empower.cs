@@ -18,6 +18,7 @@ public sealed partial class Battle
         if (!CanEmpower(champion, now)) return [];
         var emp = champion.Def.Empower!;
         champion.Gauge = 0;
+        Stats.Empowers++;
         Write(now, $"{champion.Name} uses {emp.Name}!");
 
         var results = new List<HitResult>();
