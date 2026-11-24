@@ -45,6 +45,16 @@ public sealed class Unit
     public double LastHitTime { get; set; } = double.NegativeInfinity;
     public int LastHitById { get; set; } = -1;
 
+    /// <summary>True once a boss has enraged; it only happens once per battle.</summary>
+    public bool Enraged { get; set; }
+
+    // ---- freeze
+
+    /// <summary>Battle time when a freeze wears off. A frozen unit cannot act.</summary>
+    public double FrozenUntil { get; set; } = double.NegativeInfinity;
+
+    public bool IsFrozen(double now) => now < FrozenUntil;
+
     /// <summary>Adds crystals to the gauge, capped at the maximum.</summary>
     public void AddGauge(float crystals)
     {

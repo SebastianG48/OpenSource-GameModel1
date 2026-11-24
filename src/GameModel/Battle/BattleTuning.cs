@@ -49,5 +49,8 @@ public sealed record BattleTuning
     /// <summary>ATK multiplier when a boss enrages.</summary>
     public float EnrageAtkMultiplier { get; init; } = 1.3f;
 
+    /// <summary>Damage multiplier on the hit that shatters a frozen enemy.</summary>
+    public float ShatterMultiplier { get; init; } = 1.5f;
+
     public static BattleTuning Default { get; } = new();
 }

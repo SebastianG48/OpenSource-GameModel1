@@ -122,12 +122,23 @@ public sealed partial class Battle
         }
 
         if (killed) Write(time, $"{target.Name} falls to {actor.Name}.");
+        bool enraged = TryEnrage(target, time);
 
         return new HitResult
         {
             Attacker = actor, Target = target, Time = time, Damage = damage, Spark = spark,
-            ElementMultiplier = elem, Killed = killed, Crystals = crystals,
+            ElementMultiplier = elem, Killed = killed, Crystals = crystals, Enraged = enraged,
         };
+    }
+
+    /// <summary>A boss that drops under the enrage threshold hits harder for the rest of the fight.</summary>
+    private bool TryEnrage(Unit unit, double time)
+    {
+        if (!unit.IsBoss || unit.Enraged || !unit.Alive || unit.HpFraction >= Tuning.EnrageThreshold) return false;
+        unit.Enraged = true;
+        unit.Atk = (int)Math.Round(unit.Atk * Tuning.EnrageAtkMultiplier);
+        Write(time, $"{unit.Name} is enraged!");
+        return true;
     }
 
     // ------------------------------------------------------------------ waves and outcome

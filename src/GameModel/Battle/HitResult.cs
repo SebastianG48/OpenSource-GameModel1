@@ -14,4 +14,13 @@ public sealed record HitResult
     public float ElementMultiplier { get; init; } = 1f;
     public bool Killed { get; init; }
     public int Crystals { get; init; }
+
+    /// <summary>This hit froze the target.</summary>
+    public bool Froze { get; init; }
+
+    /// <summary>This hit broke an existing freeze for bonus damage.</summary>
+    public bool Shattered { get; init; }
+
+    /// <summary>This hit pushed a boss into its enraged phase.</summary>
+    public bool Enraged { get; init; }
 }
