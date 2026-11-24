@@ -32,5 +32,8 @@ public sealed record UnitDef
     /// <summary>Gauge needed before this unit can use its Empower. 0 means it has none.</summary>
     public int GaugeMax { get; init; }
 
+    /// <summary>The special move this unit uses when its gauge is full. Enemies usually have none.</summary>
+    public EmpowerDef? Empower { get; init; }
+
     public bool IsBoss { get; init; }
 }
