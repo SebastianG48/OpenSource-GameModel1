@@ -23,7 +23,7 @@ public sealed partial class Battle
     private readonly IRandom _rng;
     private readonly List<Unit> _champions = new();
     private readonly List<Unit> _enemies = new();
-    private readonly List<string> _log = new();
+    private readonly List<(double Time, string Text)> _log = new();
     private int _nextId = 1;
 
     public Battle(StageDef stage, IReadOnlyList<UnitDef> squad, IRandom rng,
@@ -56,8 +56,11 @@ public sealed partial class Battle
 
     public BattleStats Stats { get; } = new();
 
-    /// <summary>A plain-text record of what happened, for the console demo and debugging.</summary>
-    public IReadOnlyList<string> Log => _log;
+    /// <summary>
+    /// A plain-text record of what happened, in time order, for the console demo and debugging.
+    /// Hits of a multi-hit attack are stamped slightly in the future, so entries are sorted on read.
+    /// </summary>
+    public IReadOnlyList<string> Log => _log.OrderBy(e => e.Time).Select(e => $"[{e.Time,6:0.00}s] {e.Text}").ToList();
 
     public void Start(double now = 0)
     {
@@ -218,5 +221,5 @@ public sealed partial class Battle
         }
     }
 
-    private void Write(double time, string text) => _log.Add($"[{time,6:0.00}s] {text}");
+    private void Write(double time, string text) => _log.Add((time, text));
 }
