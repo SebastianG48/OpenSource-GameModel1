@@ -13,7 +13,7 @@
       { "name": "Orc", "element": "Earth", "hp": 1300, "atk": 190, "def": 60 }
     ] },
     { "enemies": [
-      { "name": "Cyclops", "element": "Earth", "hp": 9000, "atk": 260, "def": 90, "isBoss": true,
+      { "name": "Cyclops", "element": "Earth", "hp": 9000, "atk": 420, "def": 90, "isBoss": true,
         "hitWeights": [0.4, 0.6] }
     ] }
   ]
