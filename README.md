@@ -1,5 +1,7 @@
 # OpenSource-GameModel1
 
+![CI](https://github.com/SebastianG48/OpenSource-GameModel1/actions/workflows/ci.yml/badge.svg)
+
 The battle rules from **Eastern Front Saga**, my squad RPG made in Godot 4 with C#, pulled out
 into a small standalone C# library you can build, test and run with nothing but the .NET SDK.
 
