@@ -16,7 +16,7 @@ public sealed partial class Battle
         foreach (var enemy in AliveEnemies.ToList())
         {
             if (!Fighting) break;
-            if (now < enemy.NextActionAt) continue;
+            if (now < enemy.NextActionAt || enemy.IsFrozen(now)) continue;
 
             var target = PickEnemyTarget();
             if (target == null) break;

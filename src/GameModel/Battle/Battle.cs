@@ -68,7 +68,8 @@ public sealed partial class Battle
     // ------------------------------------------------------------------ champion attacks
 
     public bool CanAttack(Unit champion, double now) =>
-        Fighting && champion.Side == Side.Champion && champion.Alive && now >= champion.NextActionAt;
+        Fighting && champion.Side == Side.Champion && champion.Alive && now >= champion.NextActionAt
+        && !champion.IsFrozen(now);
 
     /// <summary>
     /// The enemy a champion should hit: the one its element beats, then the one closest to falling.
@@ -97,8 +98,17 @@ public sealed partial class Battle
 
     // ------------------------------------------------------------------ hits
 
-    private HitResult ResolveHit(Unit actor, Unit target, float power, double time, bool empower)
+    private HitResult ResolveHit(Unit actor, Unit target, float power, double time, bool empower,
+        float freezeChance = 0, double freezeDuration = 0)
     {
+        // A champion's hit on a frozen enemy shatters the ice for bonus damage.
+        bool shatter = actor.Side == Side.Champion && target.IsFrozen(time);
+        if (shatter)
+        {
+            power *= Tuning.ShatterMultiplier;
+            target.FrozenUntil = double.NegativeInfinity;
+        }
+
         bool spark = time - target.LastHitTime <= Tuning.SparkWindow
                      && target.LastHitById != actor.Id
                      && target.LastHitById != -1;
@@ -121,6 +131,9 @@ public sealed partial class Battle
             actor.AddGauge(gain);
         }
 
+        bool froze = !shatter && target.Alive && freezeChance > 0 && _rng.NextDouble() < freezeChance;
+        if (froze) Freeze(target, time, freezeDuration);
+
         if (killed) Write(time, $"{target.Name} falls to {actor.Name}.");
         bool enraged = TryEnrage(target, time);
 
@@ -128,7 +141,19 @@ public sealed partial class Battle
         {
             Attacker = actor, Target = target, Time = time, Damage = damage, Spark = spark,
             ElementMultiplier = elem, Killed = killed, Crystals = crystals, Enraged = enraged,
+            Froze = froze, Shattered = shatter,
         };
+    }
+
+    /// <summary>
+    /// Freezes a unit: it cannot act until the freeze ends, and its next turn is pushed back by the
+    /// freeze length. The next champion hit shatters it early for bonus damage.
+    /// </summary>
+    private void Freeze(Unit unit, double time, double duration)
+    {
+        unit.FrozenUntil = time + duration;
+        unit.NextActionAt = Math.Max(unit.NextActionAt, time) + duration;
+        Write(time, $"{unit.Name} is frozen.");
     }
 
     /// <summary>A boss that drops under the enrage threshold hits harder for the rest of the fight.</summary>

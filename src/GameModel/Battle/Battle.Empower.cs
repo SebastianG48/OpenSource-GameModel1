@@ -6,7 +6,8 @@ public sealed partial class Battle
 {
     /// <summary>True when this champion's gauge is full and it is free to act.</summary>
     public bool CanEmpower(Unit champion, double now) =>
-        Fighting && champion.Side == Side.Champion && champion.Alive && champion.GaugeFull;
+        Fighting && champion.Side == Side.Champion && champion.Alive && champion.GaugeFull
+        && !champion.IsFrozen(now);
 
     /// <summary>
     /// Uses the champion's Empower. Empowers skip the attack cooldown (a full gauge is reward enough),
@@ -34,7 +35,8 @@ public sealed partial class Battle
             {
                 double time = now + i * Tuning.HitSpacing;
                 foreach (var t in targets.Where(t => t is { Alive: true }))
-                    results.Add(ResolveHit(champion, t, emp.Power * emp.HitWeights[i], time, empower: true));
+                    results.Add(ResolveHit(champion, t, emp.Power * emp.HitWeights[i], time, empower: true,
+                        emp.FreezeChance, emp.FreezeDuration));
             }
 
             if (emp.HealFraction > 0) results.AddRange(HealSquad(champion, emp, now));
