@@ -1,0 +1,35 @@
+{
+  "champions": [
+    {
+      "name": "Knight", "element": "Water", "hp": 1450, "atk": 118, "def": 64, "rec": 40,
+      "hitWeights": [0.5, 0.5], "gaugeMax": 18,
+      "empower": { "name": "Tidal Blade", "power": 2.6, "hitWeights": [0.3, 0.3, 0.4], "target": "SingleEnemy" }
+    },
+    {
+      "name": "Wizard", "element": "Lightning", "hp": 980, "atk": 142, "def": 38, "rec": 55,
+      "hitWeights": [0.2, 0.2, 0.2, 0.4], "gaugeMax": 22,
+      "empower": { "name": "Chain Storm", "power": 1.6, "hitWeights": [0.25, 0.25, 0.5], "target": "AllEnemies" }
+    },
+    {
+      "name": "Dwarf", "element": "Earth", "hp": 1700, "atk": 104, "def": 82, "rec": 35,
+      "hitWeights": [1.0], "gaugeMax": 16,
+      "empower": { "name": "Quake Hammer", "power": 1.4, "hitWeights": [1.0], "target": "AllEnemies" }
+    },
+    {
+      "name": "Pyromancer", "element": "Fire", "hp": 1020, "atk": 150, "def": 40, "rec": 45,
+      "hitWeights": [0.35, 0.65], "gaugeMax": 20,
+      "empower": { "name": "Ember Nova", "power": 3.0, "hitWeights": [0.2, 0.3, 0.5], "target": "SingleEnemy" }
+    },
+    {
+      "name": "Frost Mage", "element": "Water", "hp": 1080, "atk": 112, "def": 46, "rec": 70,
+      "hitWeights": [0.5, 0.5], "gaugeMax": 20,
+      "empower": { "name": "Glacier Lance", "power": 1.2, "hitWeights": [0.5, 0.5], "target": "AllEnemies",
+                   "freezeChance": 0.6, "freezeDuration": 3.0 }
+    },
+    {
+      "name": "Satyr", "element": "Light", "hp": 1150, "atk": 96, "def": 52, "rec": 120,
+      "hitWeights": [0.5, 0.5], "gaugeMax": 18,
+      "empower": { "name": "Dawn Song", "power": 0, "target": "AllAllies", "healFraction": 0.25 }
+    }
+  ]
+}
